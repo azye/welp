@@ -1,0 +1,7 @@
+build
+dist
+gux.egg-info
+.DS_Store
+__pycache__
+.env
+*.egg-info
