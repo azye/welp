@@ -69,7 +69,7 @@ def request(host, path, api_key, url_params=None):
     return response.json()
 
 
-def search(api_key, term, location):
+def search(api_key, term, latitude, longitude):
     """Query the Search API by a search term and location.
 
     Args:
@@ -82,8 +82,11 @@ def search(api_key, term, location):
 
     url_params = {
         'term': term.replace(' ', '+'),
-        'location': location.replace(' ', '+'),
-        'limit': SEARCH_LIMIT
+        # 'location': location.replace(' ', '+'),
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': 1000,
+        'limit': SEARCH_LIMIT,
     }
     return request(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
 
@@ -102,14 +105,14 @@ def get_business(api_key, business_id):
     return request(API_HOST, business_path, api_key)
 
 
-def query_api(term, location):
+def query_api(term, latitude, longitude):
     """Queries the API by the input values from the user.
 
     Args:
         term (str): The search term to query.
         location (str): The location of the business to query.
     """
-    response = search(API_KEY, term, location)
+    response = search(API_KEY, term, latitude, longitude)
 
     businesses = response.get('businesses')
 
@@ -118,7 +121,7 @@ def query_api(term, location):
         return
 
     for b in businesses:
-        pprint.pprint(b, indent=2)
+        pprint.pprint(b['name'], indent=2)
         # response = get_business(API_KEY, business_id)
 
     # business_id = businesses[0]['id']
