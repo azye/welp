@@ -2,6 +2,16 @@
 
 ## Development
 
+### Get a Yelp! fusion API key
+
+[here](https://www.yelp.com/fusion)
+
+Add it to your .env file
+
+```
+echo "YELP_API_KEY=<api_key>" >> .env
+```
+
 ### Install pipenv using brew on mac or linux
 ```bash
 brew install pipenv
