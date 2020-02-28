@@ -85,7 +85,7 @@ def search(api_key, term, latitude, longitude):
         # 'location': location.replace(' ', '+'),
         'latitude': latitude,
         'longitude': longitude,
-        'radius': 1000,
+        'radius': 5000,
         'limit': SEARCH_LIMIT,
     }
     return request(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
