@@ -12,6 +12,7 @@ install = "pip3 install --upgrade --force-reinstall dist/whateat-0.0.1-py3-none-
 [packages]
 geocoder = "*"
 requests = "*"
+click = "*"
 
 [requires]
 python_version = "3.6"
