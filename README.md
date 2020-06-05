@@ -12,6 +12,11 @@ Add it to your .env file
 echo "YELP_API_KEY=<api_key>" >> .env
 ```
 
+
+### Use Pyenv
+
+Yeah just do it. 3.8.2.
+
 ### Install pipenv using brew on mac or linux
 ```bash
 brew install pipenv

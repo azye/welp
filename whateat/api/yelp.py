@@ -8,26 +8,11 @@ import urllib
 import os
 import requests
 
-# This client code can run on Python 2.x or 3.x.  Your imports can be
-# simpler if you only need one of those.
-# try:
-    # For Python 3.0 and later
 from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.parse import urlencode
-# except ImportError:
-    # Fall back to Python 2's urllib2 and urllib
-    # from urllib2 import HTTPError
-    # from urllib import quote
-    # from urllib import urlencode
 
-# Yelp Fusion no longer uses OAuth as of December 7, 2017.
-# You no longer need to provide Client ID to fetch Data
-# It now uses private keys to authenticate requests (API Key)
-# You can find it on
-# https://www.yelp.com/developers/v3/manage_app
 API_KEY= os.environ['YELP_API_KEY'] 
-
 
 # API constants, you shouldn't have to change these.
 API_HOST = 'https://api.yelp.com'
@@ -119,44 +104,6 @@ def query_api(term, latitude, longitude):
     if not businesses:
         print(u'No businesses for {0} in {1} found.'.format(term, location))
         return
-
     for b in businesses:
         pprint.pprint(b['name'], indent=2)
-        # response = get_business(API_KEY, business_id)
-
-    # business_id = businesses[0]['id']
-
-    # print(u'{0} businesses found, querying business info ' \
-    #     'for the top result "{1}" ...'.format(
-    #         len(businesses), business_id))
-    # response = get_business(API_KEY, business_id)
-
-    # print(u'Result for business "{0}" found:'.format(business_id))
-    # pprint.pprint(response, indent=2)
-
-
-# def main():
-#     parser = argparse.ArgumentParser()
-
-#     parser.add_argument('-q', '--term', dest='term', default=DEFAULT_TERM,
-#                         type=str, help='Search term (default: %(default)s)')
-#     parser.add_argument('-l', '--location', dest='location',
-#                         default=DEFAULT_LOCATION, type=str,
-#                         help='Search location (default: %(default)s)')
-
-#     input_values = parser.parse_args()
-
-#     try:
-#         query_api(input_values.term, input_values.location)
-#     except HTTPError as error:
-#         sys.exit(
-#             'Encountered HTTP error {0} on {1}:\n {2}\nAbort program.'.format(
-#                 error.code,
-#                 error.url,
-#                 error.read(),
-#             )
-#         )
-
-
-# if __name__ == '__main__':
-#     main()
+        

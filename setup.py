@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/azye/whateat",
-    scripts=['./scripts/whateat'],
+    entry_points={'console_scripts': ['whateat=whateat.__main__:main']},
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
 )
