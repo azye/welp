@@ -70,7 +70,7 @@ def query_api(term, latitude, longitude):
     if not businesses:
         # print(u'No businesses for {0} in {1} found.'.format(term, location))
         return
-    for b in businesses:
-        print(b)
-        # pprint.pprint(b['name'], indent=2)
+    for i in range(len(businesses)):
+        # print(businesses[i])
+        pprint.pprint(businesses[i], indent=2)
         

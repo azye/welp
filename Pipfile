@@ -14,6 +14,9 @@ geocoder = "*"
 requests = "*"
 click = "*"
 pylint = "*"
+prompt-toolkit = "*"
+blessings = "*"
+blessed = "*"
 
 [requires]
 python_version = "3.8.2"
