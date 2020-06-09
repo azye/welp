@@ -12,6 +12,7 @@ Add it to your .env file
 echo "YELP_API_KEY=<api_key>" >> .env
 ```
 
+### Get a Google Maps Geolocation API Key. Should be free for most general users.
 
 ### Use Pyenv
 
