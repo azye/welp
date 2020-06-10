@@ -17,6 +17,8 @@ pylint = "*"
 prompt-toolkit = "*"
 blessings = "*"
 blessed = "*"
+termcolor = "*"
+colorama = "*"
 
 [requires]
 python_version = "3.8.2"

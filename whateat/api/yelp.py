@@ -65,12 +65,12 @@ def query_api(term, latitude, longitude):
     """
     response = search(API_KEY, term, latitude, longitude)
 
-    businesses = response.get('businesses')
-
-    if not businesses:
-        # print(u'No businesses for {0} in {1} found.'.format(term, location))
-        return
-    for i in range(len(businesses)):
-        # print(businesses[i])
-        pprint.pprint(businesses[i], indent=2)
+    return response.get('businesses')
+    # return businesses
+    # if not businesses:
+    #     # print(u'No businesses for {0} in {1} found.'.format(term, location))
+    #     return
+    # for i in range(len(businesses)):
+    #     # print(businesses[i])
+    #     pprint.pprint(businesses[i], indent=2)
         
