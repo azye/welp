@@ -38,24 +38,24 @@ def search(term, location, latitude, longitude, radius, categories, locale, limi
     }
 
     if not latitude and not longitude:
-            # using google maps geolocation API if you have a key
-            if 'GOOGLE_API_KEY' in os.environ:
-                print('using Google API')
-                geo = geolocation.geolocate()
-                print(geo)
-                url_params['latitude'] = geo['location']['lat']
-                url_params['longitude'] = geo['location']['lng']
-            else:
-                # uses this inaccurate api as test
-                print('using geocoder')
-                g = geocoder.ip('me')
-                print(g.latlng)
+        # using google maps geolocation API if you have a key
+        if 'GOOGLE_API_KEY' in os.environ:
+            print('using Google API')
+            geo = geolocation.geolocate()
+            print(geo)
+            url_params['latitude'] = geo['location']['lat']
+            url_params['longitude'] = geo['location']['lng']
+        else:
+            # uses this inaccurate api as test
+            print('using geocoder')
+            g = geocoder.ip('me')
+            print(g.latlng)
     
     bus = yelp.query_api(url_params)
     
     for i in range(len(bus)):
         # print(businesses[i])
-        pprint.pprint(bus[i]['name'], indent=2)
+        print(bus[i]['name'])
 
     # pipepager(Fore.RED + str(bus), cmd='less -R')
 
