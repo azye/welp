@@ -19,9 +19,23 @@ from colorama import Fore, Back, Style
 @click.option('--longitude', default=-122.472149, type=click.FLOAT)
 @click.option('--radius', default=5000)
 @click.option('--categories', default="")
-@click.option('--locale', default="")
-def search(term, location, latitude, longitude, radius, categories, locale):
+@click.option('--locale', default="en_US")
+@click.option('--limit', default=20, type=click.INT)
+@click.option('--sort-by', default='best_match', type=click.STRING)
+def search(term, location, latitude, longitude, radius, categories, locale, limit, sort_by):
     print(term, location, latitude, longitude, radius)
+    
+    url_params = {
+        'term': term.replace(' ', '+'),
+        'location': location.replace(' ', '+'),
+        'latitude': latitude,
+        'longitude': longitude,
+        'radius': radius,
+        'categories': categories,
+        'locale': locale,
+        'limit': limit,
+        'sort-by': sort_by,
+    }
 
     if not latitude and not longitude:
             # using google maps geolocation API if you have a key
@@ -29,15 +43,16 @@ def search(term, location, latitude, longitude, radius, categories, locale):
                 print('using Google API')
                 geo = geolocation.geolocate()
                 print(geo)
-                latitude = geo['location']['lat']
-                longitude = geo['location']['lng']
+                url_params['latitude'] = geo['location']['lat']
+                url_params['longitude'] = geo['location']['lng']
             else:
                 # uses this inaccurate api as test
                 print('using geocoder')
                 g = geocoder.ip('me')
                 print(g.latlng)
-    bus = yelp.query_api(term, latitude, longitude)
-        
+    
+    bus = yelp.query_api(url_params)
+    
     for i in range(len(bus)):
         # print(businesses[i])
         pprint.pprint(bus[i]['name'], indent=2)
