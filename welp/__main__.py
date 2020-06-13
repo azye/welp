@@ -60,10 +60,10 @@ def search(term, location, latitude, longitude, radius, categories, locale, limi
     # pipepager(Fore.RED + str(bus), cmd='less -R')
 
 @click.group()
-def whateat():
+def welp():
     pass
 
-whateat.add_command(search)
+welp.add_command(search)
 
     # pager('hello world\n' * 20 + 'hello world2\n' * 20)
     # pager()

@@ -1,4 +1,4 @@
-# WhatEat
+# welp
 
 ## Development
 
@@ -28,7 +28,7 @@ brew install pipenv
 pipenv shell
 ```
 
-### Install and build whateat app in venv
+### Install and build welp app in venv
 ```bash
 pipenv install      # installs python dependencies
 pipenv run build    # builds the python project
@@ -37,5 +37,5 @@ pipenv run install  # installs the project locally
 
 ### Run it!
 ```bash
-whateat
+welp
 ```

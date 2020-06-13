@@ -5,7 +5,7 @@ verify_ssl = true
 
 [scripts]
 build = "python3 setup.py sdist bdist_wheel"
-install = "pip3 install --upgrade --force-reinstall dist/whateat-0.0.1-py3-none-any.whl"
+install = "pip3 install --upgrade --force-reinstall dist/welp-0.0.1-py3-none-any.whl"
 
 [dev-packages]
 
@@ -19,6 +19,7 @@ blessings = "*"
 blessed = "*"
 termcolor = "*"
 colorama = "*"
+twine = "*"
 
 [requires]
 python_version = "3.8.2"
