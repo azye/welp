@@ -5,7 +5,8 @@ verify_ssl = true
 
 [scripts]
 build = "python3 setup.py sdist bdist_wheel"
-install = "pip3 install --upgrade --force-reinstall dist/welp-0.0.1-py3-none-any.whl"
+install = "pip3 install --upgrade --force-reinstall dist/welp-0.0.2-py3-none-any.whl"
+push = "twine upload dist/*"
 
 [dev-packages]
 

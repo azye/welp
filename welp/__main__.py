@@ -22,7 +22,9 @@ from colorama import Fore, Back, Style
 @click.option('--locale', default="en_US")
 @click.option('--limit', default=20, type=click.INT)
 @click.option('--sort-by', default='best_match', type=click.STRING)
-def search(term, location, latitude, longitude, radius, categories, locale, limit, sort_by):
+@click.option('--price', type=click.INT)
+@click.option('--attributes', type=click.STRING)
+def search(term, location, latitude, longitude, radius, categories, locale, limit, sort_by, price, attributes):
     print(term, location, latitude, longitude, radius)
     
     url_params = {
@@ -35,6 +37,8 @@ def search(term, location, latitude, longitude, radius, categories, locale, limi
         'locale': locale,
         'limit': limit,
         'sort-by': sort_by,
+        'price': price,
+        'attributes': attributes,
     }
 
     if not latitude and not longitude:
@@ -52,10 +56,12 @@ def search(term, location, latitude, longitude, radius, categories, locale, limi
             print(g.latlng)
     
     bus = yelp.query_api(url_params)
+
+    pprint.pprint(bus[0])
     
-    for i in range(len(bus)):
-        # print(businesses[i])
-        print(bus[i]['name'])
+    # for i in range(len(bus)):
+    #     # print(businesses[i])
+    #     print(bus[i]['name'])
 
     # pipepager(Fore.RED + str(bus), cmd='less -R')
 
