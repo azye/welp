@@ -7,7 +7,6 @@ import os
 import click
 import pprint
 import time
-# from blessings import Terminal
 from pydoc import pipepager
 from termcolor import colored, cprint
 from colorama import Fore, Back, Style
@@ -41,6 +40,7 @@ def search(term, location, latitude, longitude, radius, categories, locale, limi
         'attributes': attributes,
     }
 
+
     if not latitude and not longitude:
         # using google maps geolocation API if you have a key
         if 'GOOGLE_API_KEY' in os.environ:
@@ -70,31 +70,3 @@ def welp():
     pass
 
 welp.add_command(search)
-
-    # pager('hello world\n' * 20 + 'hello world2\n' * 20)
-    # pager()
-        # time.sleep(10)
-
-
-    # if there is latlong addes as arguments
-    # if not lat and not lng:
-    #     # using google maps geolocation API if you have a key
-    #     if 'GOOGLE_API_KEY' in os.environ:
-    #         print('using Google API')
-    #         geo = geolocation.geolocate()
-    #         print(geo)
-    #         lat = geo['location']['lat']
-    #         lng = geo['location']['lng']
-    #     else:
-    #         # uses this inaccurate api as test
-    #         print('using geocoder')
-    #         g = geocoder.ip('me')
-    #         print(g.latlng)
-
-    # bus = yelp.query_api(term, lat, lng)
-    
-    # # for i in range(len(businesses)):
-    # #     # print(businesses[i])
-    # #     pprint.pprint(businesses[i], indent=2)
-
-    # pipepager(Fore.RED + str(bus), cmd='less -R')
