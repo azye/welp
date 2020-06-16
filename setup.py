@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="welp",
-    version="0.0.2",
+    version="0.0.3",
     author="Alex Ye",
     author_email="alexzye1@gmail.com",
     description="what should i eat?",

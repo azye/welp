@@ -25,7 +25,7 @@ def request(host, path, api_key, url_params=None):
         'Authorization': 'Bearer %s' % api_key,
     }
 
-    print(u'Querying {0} ...'.format(url))
+    # print(u'Querying {0} ...'.format(url))
 
     response = requests.request('GET', url, headers=headers, params=url_params)
 
@@ -33,14 +33,7 @@ def request(host, path, api_key, url_params=None):
 
 
 def search(api_key, url_params):
-    # url_params = {
-    #     'term': term.replace(' ', '+'),
-    #     'latitude': latitude,
-    #     'longitude': longitude,
-    #     'radius': 5000,
-    #     'limit': SEARCH_LIMIT,
-    # }
-    print(url_params)
+
     return request(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
 
 

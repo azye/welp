@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "d267b8d5b93f421d60862052d9ddff9dd8fb0409dd062ff87b9420a158ec3ce0"
+            "sha256": "0e42c9277d5601270f2d9f0fcd3f6bb6545b214185b27f7da85e786ec5a16bc2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -31,23 +31,6 @@
             ],
             "markers": "python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4'",
             "version": "==3.1.5"
-        },
-        "blessed": {
-            "hashes": [
-                "sha256:219d422995a0938a0b5c89c711878ce76262091a8e97def7d2028a1721cf06ab",
-                "sha256:7671d057b2df6ddbefd809009fb08feb2f8d2d163d240b5e765088a90519b2f1"
-            ],
-            "index": "pypi",
-            "version": "==1.17.8"
-        },
-        "blessings": {
-            "hashes": [
-                "sha256:98e5854d805f50a5b58ac2333411b0482516a8210f23f43308baeb58d77c157d",
-                "sha256:b1fdd7e7a675295630f9ae71527a8ebc10bfefa236b3d6aa4932ee4462c17ba3",
-                "sha256:caad5211e7ba5afe04367cdd4cfc68fa886e2e08f6f35e76b7387d2109ccea6e"
-            ],
-            "index": "pypi",
-            "version": "==1.7"
         },
         "certifi": {
             "hashes": [
