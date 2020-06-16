@@ -1,41 +1,32 @@
 # welp
 
-## Development
+`welp` is a yelp CLI client and business recommender
 
-### Get a Yelp! fusion API key
+## Features
 
-[here](https://www.yelp.com/fusion)
+- Utilizes Yelp! Fusion API for business searches
+- Google Geolocation API searching user location based off wifi
+- (Planned) Python Curses menus
 
-Add it to your .env file
+## Installation
 
+Use pip3
 ```
-echo "YELP_API_KEY=<api_key>" >> .env
-```
-
-### Get a Google Maps Geolocation API Key. Should be free for most general users.
-
-### Use Pyenv
-
-Yeah just do it. 3.8.2.
-
-### Install pipenv using brew on mac or linux
-```bash
-brew install pipenv
+pip3 install welp
 ```
 
-### Enter the pipenv virtual environment
-```bash
-pipenv shell
+## Usage
+
+You will need a Yelp Fusion API key in order to use this application.
+
+Once you have it, export it to your environment
+```
+export YELP_API_KEY=<key>
 ```
 
-### Install and build welp app in venv
-```bash
-pipenv install      # installs python dependencies
-pipenv run build    # builds the python project
-pipenv run install  # installs the project locally
+If you'd like to use Google Geolocation API for automated geolocated, provide the environment with the Google API Key also:
+```
+export GOOGLE_API_KEY=<key>
 ```
 
-### Run it!
-```bash
-welp
-```
+Both of these keys are basically free for to use individually. The Google API will require a form of payment, but has a free credit program.
