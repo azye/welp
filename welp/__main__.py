@@ -1,7 +1,7 @@
 import sys
 import uuid
-from .api import yelp
-from .api import geolocation
+# from .api import yelp
+from .api.client import Client
 import geocoder
 import os
 import click
@@ -25,7 +25,7 @@ def welp():
 @click.option('--attributes', default='', type=click.STRING)
 @click.option('--verbose', default=False, type=click.BOOL)
 def search(term, location, latitude, longitude, radius, 
-categories, locale, limit, sort_by, price, attributes, verbose):    
+categories, locale, limit, sort_by, price, attributes, verbose):
     url_params = {
         'term': term.replace(' ', '+'),
         'radius': radius,
@@ -37,13 +37,15 @@ categories, locale, limit, sort_by, price, attributes, verbose):
         'attributes': attributes,
     }
 
+    client = Client()
+
     if location:
         url_params['location'] =  location.replace(' ', '+')
-    
+
     if not location and not latitude and not longitude:
         # using google maps geolocation API if you have a key
         if 'GOOGLE_API_KEY' in os.environ:
-            geo = geolocation.geolocate()
+            geo = client.geolocation.geolocate()
             url_params['latitude'] = geo['location']['lat']
             url_params['longitude'] = geo['location']['lng']
         else:
@@ -56,10 +58,10 @@ categories, locale, limit, sort_by, price, attributes, verbose):
     if verbose:
         print(url_params)
     
-    bus = yelp.query_api(url_params)
+    # bus = yelp.query_api(url_params)
 
-    for i in range(len(bus)):
-        # print(bus[i])
-        print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
+    # for i in range(len(bus)):
+    #     # print(bus[i])
+    #     print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
 
 welp.add_command(search)
