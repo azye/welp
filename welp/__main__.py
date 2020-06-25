@@ -67,39 +67,19 @@ categories, locale, limit, sort_by, price, attributes, verbose):
     for i in range(len(bus)):
         # print(bus[i])
         print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
-
-    print_window()
-    # cw = CursesWindow()
-    # cw.render_screen()
-
-
-# class CursesWindow:
-#     def __init__(self):
-#         b = curses.initscr()
-#         self.curse = curses.newpad(100, 100)
-#         curses.noecho()
-#         curses.cbreak()
-#         b.keypad(True)
-
-
-#     def render_screen(self):
-#         self.curse.clear()
-#         for y in range(0, 99):
-#             for x in range(0, 99):
-#                 self.curse.addch(y,x, ord('a') + (x*x+y*y) % 26)
-#         self.curse.refresh( 0,0, 5,5, 20,75)
-
     
-def print_window():
-    screen = curses.initscr()
-    curses.noecho()
-    curses.cbreak()
-    curses.start_color()
-    screen.keypad( 1 )
+    curses.wrapper(print_window)
+    
+def print_window(stdscr):
+    # screen = curses.initscr() # init the curses screen
+    curses.noecho() # no echo mode blocks input echo
+    curses.cbreak() # react to buffered input without return
+    curses.start_color() # enables color
+    stdscr.keypad( 1 ) 
     curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_CYAN)
     highlightText = curses.color_pair( 1 )
     normalText = curses.A_NORMAL
-    screen.border( 0 )
+    stdscr.border( 0 )
     curses.curs_set( 0 )
     max_row = 10 #max number of rows
     box = curses.newwin( max_row + 2, 64, 1, 1 )
@@ -123,10 +103,10 @@ def print_window():
             if i == row_num:
                 break
 
-    screen.refresh()
+    stdscr.refresh()
     box.refresh()
 
-    x = screen.getch()
+    x = stdscr.getch()
     while x != 27:
         if x == curses.KEY_DOWN:
             if page == 1:
@@ -165,12 +145,12 @@ def print_window():
                 page = page + 1
                 position = ( 1 + ( max_row * ( page - 1 ) ) )
         if x == ord( "\n" ) and row_num != 0:
-            screen.erase()
-            screen.border( 0 )
-            screen.addstr( 14, 3, "YOU HAVE PRESSED '" + strings[ position - 1 ] + "' ON POSITION " + str( position ) )
+            stdscr.erase()
+            stdscr.border( 0 )
+            stdscr.addstr( 14, 3, "YOU HAVE PRESSED '" + strings[ position - 1 ] + "' ON POSITION " + str( position ) )
 
         box.erase()
-        screen.border( 0 )
+        stdscr.border( 0 )
         box.border( 0 )
 
         for i in range( 1 + ( max_row * ( page - 1 ) ), max_row + 1 + ( max_row * ( page - 1 ) ) ):
@@ -186,11 +166,10 @@ def print_window():
 
 
 
-        screen.refresh()
+        stdscr.refresh()
         box.refresh()
-        x = screen.getch()
+        x = stdscr.getch()
 
         
-
 
 welp.add_command(search)
