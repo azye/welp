@@ -63,12 +63,10 @@ categories, locale, limit, sort_by, price, attributes, verbose):
         print(url_params)
     
     bus = client.yelp.query_api(url_params)
-
-    for i in range(len(bus)):
-        # print(bus[i])
-        print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
+    # for i in range(len(bus)):
+    #     print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
     
-    c = CursesWindow()
+    c = CursesWindow(['{} {} {}'.format(x['name'], x['price'], x['rating']) for x in bus])
     c.open_screen()
 
 welp.add_command(search)

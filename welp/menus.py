@@ -4,40 +4,34 @@ import curses
 import math
 
 class CursesWindow:
-    # def __init__(self):
-    #     b = curses.initscr()
-    #     self.curse = curses.newpad(100, 100)
-        # curses.noecho()
-        # curses.cbreak()
-        # b.keypad(True)
-
-#     def render_screen(self):
-#         self.curse.clear()
-#         for y in range(0, 99):
-#             for x in range(0, 99):
-#                 self.curse.addch(y,x, ord('a') + (x*x+y*y) % 26)
-#         self.curse.refresh( 0,0, 5,5, 20,75)
+    def __init__(self, data):
+        self.data = data
 
     def open_screen(self):
         curses.wrapper(self.print_window)
+    
+    def init_stuff(self):
+        # initializes a color pair 1 where black is the foreground (text) and cyan is the background
+        curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_CYAN)
+        # disable terminal cursor
+        curses.curs_set( 0 )
 
     def print_window(self, stdscr):
-        # screen = curses.initscr() # init the curses screen
-        curses.noecho() # no echo mode blocks input echo
-        curses.cbreak() # react to buffered input without return
-        curses.start_color() # enables color
-        stdscr.keypad( 1 ) 
-        curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_CYAN)
+        self.init_stuff()
+
+        rows, cols = stdscr.getmaxyx()
+
+        # gets color pair 1
         highlightText = curses.color_pair( 1 )
+        # A_NORMAL is default text styling
         normalText = curses.A_NORMAL
-        stdscr.border( 0 )
-        curses.curs_set( 0 )
-        max_row = 10 #max number of rows
-        box = curses.newwin( max_row + 2, 64, 1, 1 )
+
+        max_row = 30 # max number of rows
+        
+        box = curses.newwin( rows, cols )
         box.box()
 
-
-        strings = [ "a", "b", "c", "d", "e", "f", "g", "h", "i", "l", "m", "n" ] #list of strings
+        strings = self.data
         row_num = len( strings )
 
         pages = int( math.ceil( row_num / max_row ) )
@@ -114,8 +108,6 @@ class CursesWindow:
                         box.addstr( i - ( max_row * ( page - 1 ) ), 2, str( i ) + " - " + strings[ i - 1 ], normalText )
                     if i == row_num:
                         break
-
-
 
             stdscr.refresh()
             box.refresh()
