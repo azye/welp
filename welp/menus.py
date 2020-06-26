@@ -52,8 +52,8 @@ class CursesWindow:
         box.refresh()
 
         x = stdscr.getch()
-        while x != 27:
-            if x == curses.KEY_DOWN:
+        while x != 27 and x != 113:
+            if x == curses.KEY_DOWN or x == 106:
                 if page == 1:
                     if position < i:
                         position = position + 1
@@ -70,7 +70,7 @@ class CursesWindow:
                     else:
                         page = page + 1
                         position = 1 + ( max_row * ( page - 1 ) )
-            if x == curses.KEY_UP:
+            if x == curses.KEY_UP or x == 107:
                 if page == 1:
                     if position > 1:
                         position = position - 1
