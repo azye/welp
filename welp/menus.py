@@ -1,5 +1,3 @@
-
-
 import curses
 import math
 
@@ -37,6 +35,7 @@ class CursesWindow:
         pages = int( math.ceil( row_num / max_row ) )
         position = 1
         page = 1
+        # prints out the strings
         for i in range( 1, max_row + 1 ):
             if row_num == 0:
                 box.addstr( 1, 1, "There aren't strings", highlightText )
@@ -52,6 +51,7 @@ class CursesWindow:
         box.refresh()
 
         x = stdscr.getch()
+        # detects for key changes
         while x != 27 and x != 113:
             if x == curses.KEY_DOWN or x == 106:
                 if page == 1:
@@ -89,10 +89,10 @@ class CursesWindow:
                 if page < pages:
                     page = page + 1
                     position = ( 1 + ( max_row * ( page - 1 ) ) )
-            if x == ord( "\n" ) and row_num != 0:
-                stdscr.erase()
-                stdscr.border( 0 )
-                stdscr.addstr( 14, 3, "YOU HAVE PRESSED '" + strings[ position - 1 ] + "' ON POSITION " + str( position ) )
+            # if x == ord( "\n" ) and row_num != 0:
+                # stdscr.erase()
+                # stdscr.border( 0 )
+                # stdscr.addstr( 14, 3, "YOU HAVE PRESSED '" + strings[ position - 1 ] + "' ON POSITION " + str( position ) )
 
             box.erase()
             stdscr.border( 0 )

@@ -62,7 +62,9 @@ class BusinessSearch:
             term (str): The search term to query.
             location (str): The location of the business to query.
         """
-        response = self.search(API_KEY, url_params)
+        response = self.search(API_KEY, url_params.__dict__)
+
+        # print(response)
 
         return response.get('businesses')
         # return businesses

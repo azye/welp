@@ -8,12 +8,30 @@ import click
 import pprint
 import curses
 import math
+import pickle
 
 from .menus import CursesWindow
 
 @click.group()
 def welp():
     pass
+
+
+class ClickData:
+    def __init__(self, term, location, latitude, longitude, radius, categories, locale, limit, sort_by, price, attributes, verbose):
+        self.term = term.replace(' ', '+')
+        self.location = location.replace(' ', '+') if location else None
+        self.latitude = latitude
+        self.longitude = longitude
+        self.term = term
+        self.radius = radius
+        self.categories = categories
+        self.locale = locale
+        self.limit = limit
+        self.sort_by = sort_by
+        self.price = price
+        self.attributes = attributes
+        self.verbose = verbose
 
 @click.command()
 @click.option('--term', default='Restaurants', type=click.STRING)
@@ -30,41 +48,34 @@ def welp():
 @click.option('--verbose', default=False, type=click.BOOL)
 def search(term, location, latitude, longitude, radius, 
 categories, locale, limit, sort_by, price, attributes, verbose):
-    url_params = {
-        'term': term.replace(' ', '+'),
-        'radius': radius,
-        'categories': categories,
-        'locale': locale,
-        'limit': limit,
-        'sort-by': sort_by,
-        'price': price,
-        'attributes': attributes,
-    }
+
+
+    dd = ClickData(term, location, latitude, longitude, radius, categories, locale, limit, sort_by, price, attributes, verbose)
+    print(dd.__dict__)
 
     client = Client()
 
-    if location:
-        url_params['location'] =  location.replace(' ', '+')
+    # if location:
+    #     dd.location =  location.replace(' ', '+')
 
     if not location and not latitude and not longitude:
         # using google maps geolocation API if you have a key
         if 'GOOGLE_API_KEY' in os.environ:
             geo = client.geolocation.geolocate()
-            url_params['latitude'] = geo['location']['lat']
-            url_params['longitude'] = geo['location']['lng']
+            dd.latitude = geo['location']['lat']
+            dd.longitude = geo['location']['lng']
         else:
             # dont use this. just look up your lat long at this point. 
             # useful to test without using an google geolocation API key tho
             g = geocoder.ip('me')
-            url_params['latitude'] = g.latlng[0]
-            url_params['longitude'] = g.latlng[1]
+            dd.latitude = g.latlng[0]
+            dd.longitude = g.latlng[1]
     
-    if verbose:
-        print(url_params)
+    if dd.verbose:
+        print(dd)
     
-    bus = client.yelp.query_api(url_params)
-    # for i in range(len(bus)):
-    #     print(bus[i]['id'] if verbose else '', bus[i]['name'], bus[i]['price'], bus[i]['rating'])
+    bus = client.yelp.query_api(dd)
+    # print(bus.__dict__)
     
     c = CursesWindow(['{} {} {}'.format(x['name'], x['price'], x['rating']) for x in bus])
     c.open_screen()
