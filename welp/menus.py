@@ -2,20 +2,21 @@ import curses
 import math
 
 class CursesWindow:
-    def __init__(self, data):
+    
+    def set_data(self, data):
         self.data = data
 
-    def open_screen(self):
+    def open_curses_ui(self):
         curses.wrapper(self.print_window)
-    
-    def init_stuff(self):
+
+    def init_curses(self):
         # initializes a color pair 1 where black is the foreground (text) and cyan is the background
         curses.init_pair(1,curses.COLOR_BLACK, curses.COLOR_CYAN)
         # disable terminal cursor
         curses.curs_set( 0 )
 
     def print_window(self, stdscr):
-        self.init_stuff()
+        self.init_curses()
 
         rows, cols = stdscr.getmaxyx()
 
