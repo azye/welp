@@ -7,7 +7,7 @@ import pprint
 import curses
 import math
 from .welp import Welp
-from.click_data import ClickData
+from .click_data import ClickData
 
 @click.group()
 def welp():
@@ -29,11 +29,15 @@ def welp():
 def search(term, location, latitude, longitude, radius, 
 categories, locale, limit, sort_by, price, attributes, verbose):
     welp = Welp()
-    geo = welp.api_client.geolocation.geolocate()
 
     click_data = ClickData(term, location, latitude, longitude, radius, categories, 
         locale, limit, sort_by, price, attributes, verbose)
-    click_data.set_location(geo)
+    
+
+    if not click_data.latitude and not click_data.longitude:
+        print('geolocating...')
+        lat, ln = welp.api_client.geolocation.geolocate()
+        click_data.set_location(lat, ln)
 
     bus = welp.api_client.yelp.query_api(click_data)
     welp.ui.set_data(['{} {} {}'.format(x['name'], x['price'], x['rating']) for x in bus])

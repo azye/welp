@@ -17,16 +17,7 @@ class ClickData:
         self.attributes = attributes
         self.verbose = verbose
 
-    def set_location(self, geo):
-        if not self.location and not self.latitude and not self.longitude:
-        # using google maps geolocation API if you have a key
-            if 'GOOGLE_API_KEY' in os.environ:
-                self.latitude = geo['location']['lat']
-                self.longitude = geo['location']['lng']
-            else:
-                # dont use this. just look up your lat long at this point. 
-                # useful to test without using an google geolocation API key tho
-                g = geocoder.ip('me')
-                self.latitude = g.latlng[0]
-                self.longitude = g.latlng[1]
-    
+    def set_location(self, lat, ln):
+
+        self.latitude = lat
+        self.longitude = ln

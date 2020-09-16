@@ -18,7 +18,6 @@ SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 SEARCH_LIMIT = 20
 
-
 class BusinessSearch:
     def __init__(self, client):
         self.client = client
@@ -57,7 +56,6 @@ class BusinessSearch:
 
     def query_api(self, url_params):
         """Queries the API by the input values from the user.
-
         Args:
             term (str): The search term to query.
             location (str): The location of the business to query.

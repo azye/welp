@@ -2,7 +2,6 @@ import curses
 import math
 
 class CursesWindow:
-    
     def set_data(self, data):
         self.data = data
 
@@ -15,11 +14,16 @@ class CursesWindow:
         # disable terminal cursor
         curses.curs_set( 0 )
 
+
+
+    # def print_initial_screen(self, box):
+        
+
     def print_window(self, stdscr):
         self.init_curses()
 
         rows, cols = stdscr.getmaxyx()
-
+        print(f'{rows} rows and {cols} cols')
         # gets color pair 1
         highlightText = curses.color_pair( 1 )
         # A_NORMAL is default text styling
@@ -27,6 +31,7 @@ class CursesWindow:
 
         max_row = 30 # max number of rows
         
+        # initialize as a box
         box = curses.newwin( rows, cols )
         box.box()
 
@@ -36,15 +41,19 @@ class CursesWindow:
         pages = int( math.ceil( row_num / max_row ) )
         position = 1
         page = 1
+
+        box.addstr(1, 1,f'{rows} rows and {cols} cols', normalText)
+
         # prints out the strings
-        for i in range( 1, max_row + 1 ):
+        for i in range( 2, max_row + 1 ):
             if row_num == 0:
                 box.addstr( 1, 1, "There aren't strings", highlightText )
             else:
                 if (i == position):
-                    box.addstr( i, 2, str( i ) + " - " + strings[ i - 1 ], highlightText )
+                    # y, x, string
+                    box.addstr( i+1, 2, str( i ) + " - " + strings[ i - 1 ], highlightText )
                 else:
-                    box.addstr( i, 2, str( i ) + " - " + strings[ i - 1 ], normalText )
+                    box.addstr( i+1, 2, str( i ) + " - " + strings[ i - 1 ], normalText )
                 if i == row_num:
                     break
 
