@@ -9,6 +9,7 @@ install = "pip3 install --upgrade --force-reinstall dist/welp-0.0.3-py3-none-any
 push = "twine upload dist/*"
 
 [dev-packages]
+flake8 = "*"
 
 [packages]
 geocoder = "*"
@@ -19,6 +20,8 @@ prompt-toolkit = "*"
 termcolor = "*"
 colorama = "*"
 twine = "*"
+mypy = "*"
+autopep8 = "*"
 
 [requires]
 python_version = "3.8.2"

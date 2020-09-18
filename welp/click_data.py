@@ -1,8 +1,20 @@
-import geocoder
-import os
+
 
 class ClickData:
-    def __init__(self, term, location, latitude, longitude, radius, categories, locale, limit, sort_by, price, attributes, verbose):
+    def __init__(
+            self,
+            term,
+            location,
+            latitude,
+            longitude,
+            radius,
+            categories,
+            locale,
+            limit,
+            sort_by,
+            price,
+            attributes,
+            verbose):
         self.term = term.replace(' ', '+')
         self.location = location.replace(' ', '+') if location else None
         self.latitude = latitude

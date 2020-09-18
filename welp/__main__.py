@@ -9,9 +9,11 @@ import math
 from .welp import Welp
 from .click_data import ClickData
 
+
 @click.group()
 def welp():
     pass
+
 
 @click.command()
 @click.option('--term', default='Restaurants', type=click.STRING)
@@ -26,13 +28,23 @@ def welp():
 @click.option('--price', default='1,2,3', type=click.STRING)
 @click.option('--attributes', default='', type=click.STRING)
 @click.option('--verbose', default=False, type=click.BOOL)
-def search(term, location, latitude, longitude, radius, 
-categories, locale, limit, sort_by, price, attributes, verbose):
+def search(term, location, latitude, longitude, radius,
+           categories, locale, limit, sort_by, price, attributes, verbose):
     welp = Welp()
 
-    click_data = ClickData(term, location, latitude, longitude, radius, categories, 
-        locale, limit, sort_by, price, attributes, verbose)
-    
+    click_data = ClickData(
+        term,
+        location,
+        latitude,
+        longitude,
+        radius,
+        categories,
+        locale,
+        limit,
+        sort_by,
+        price,
+        attributes,
+        verbose)
 
     if not click_data.latitude and not click_data.longitude:
         print('geolocating...')
@@ -40,7 +52,9 @@ categories, locale, limit, sort_by, price, attributes, verbose):
         click_data.set_location(lat, ln)
 
     bus = welp.api_client.yelp.query_api(click_data)
-    welp.ui.set_data(['{} {} {}'.format(x['name'], x['price'], x['rating']) for x in bus])
+    welp.ui.set_data(
+        ['{} {} {}'.format(x['name'], x['price'], x['rating']) for x in bus])
     welp.ui.open_curses_ui()
+
 
 welp.add_command(search)

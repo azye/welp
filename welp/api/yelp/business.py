@@ -12,11 +12,12 @@ from urllib.error import HTTPError
 from urllib.parse import quote
 from urllib.parse import urlencode
 
-API_KEY= os.environ['YELP_API_KEY'] 
+API_KEY = os.environ['YELP_API_KEY']
 API_HOST = 'https://api.yelp.com'
 SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
 SEARCH_LIMIT = 20
+
 
 class BusinessSearch:
     def __init__(self, client):
@@ -31,15 +32,15 @@ class BusinessSearch:
 
         # print(u'Querying {0} ...'.format(url))
 
-        response = self.client.session.request('GET', url, headers=headers, params=url_params)
+        response = self.client.session.request(
+            'GET', url, headers=headers, params=url_params)
 
         return response.json()
 
-
     def search(self, api_key, url_params):
 
-        return self.request(API_HOST, SEARCH_PATH, api_key, url_params=url_params)
-
+        return self.request(API_HOST, SEARCH_PATH,
+                            api_key, url_params=url_params)
 
     def get_business(self, api_key, business_id):
         """Query the Business API by a business ID.
@@ -72,4 +73,3 @@ class BusinessSearch:
         # for i in range(len(businesses)):
         #     # print(businesses[i])
         #     pprint.pprint(businesses[i], indent=2)
-            

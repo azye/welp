@@ -6,5 +6,3 @@ class Welp:
     def __init__(self):
         self.ui = CursesWindow()
         self.api_client = Client()
-
-        
