@@ -39,7 +39,8 @@ def search(term, location, latitude, longitude, radius,
         attributes,
         verbose)
 
-    if not click_data.latitude and not click_data.longitude:
+    if not click_data.latitude and not click_data.longitude \
+       and not click_data.location:
         lat, ln = welp.api_client.geolocation.geolocate()
         click_data.set_location(lat, ln)
 
