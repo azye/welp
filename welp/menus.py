@@ -1,16 +1,19 @@
 import curses
-import math
 
 
 class CursesWindow:
     def set_data(self, data):
         lines = []
+        print(data)
         for b in data:
             lines.append(b['name'])
             lines.append('{}  {}  {}'.format(b['price'], b['distance'],
                          b['rating']))
             lines.append(b['url'].split('?')[0])
             lines.append('')
+
+        # for l in lines:
+        #     print(l)
 
         self.data = lines
 
@@ -22,16 +25,19 @@ class CursesWindow:
             self.window_box.addstr(1, 1, "No results found 🍴",
                                    HIGHLIGHT_TEXT)
         else:
+            if self.rows % 4 != 0:
+                self.rows -= (self.rows % 4)
+
             for i in range(self.rows):
-                if (i == self.position):
+                if 4 * self.position <= i < 4 * self.position + 4:
                     # y, x, string
-                    # print("belh", i)
-                    self.window_box.addstr(i, 1, self.data[i],
-                                           HIGHLIGHT_TEXT)
+                    self.window_box.addstr(i, 1, self.data[(self.current_page
+                                           * self.rows) + i], HIGHLIGHT_TEXT)
                 else:
-                    # print(i)
-                    self.window_box.addstr(i, 1, self.data[i],
-                                           NORMAL_TEXT)
+                    if (self.current_page * self.rows) + i < len(self.data):
+                        self.window_box.addstr(i, 1, self.data[
+                                               (self.current_page * self.rows)
+                                               + i], NORMAL_TEXT)
                 if i == len(self.data):
                     break
 
@@ -50,16 +56,9 @@ class CursesWindow:
 
         self.stdscr = stdscr
         self.rows, self.cols = stdscr.getmaxyx()
-        box = curses.newwin(self.rows, self.cols)
-
-        self.pages = int(math.ceil(len(self.data) / self.rows))
         self.position = 0
-        self.current_page = 1
-
-        self.window_box = box
-        # self.window_box.box()
-
-        return
+        self.current_page = 0
+        self.window_box = curses.newwin(self.rows, self.cols)
 
     def poll_draw_render(self):
         # HIGHLIGHT_TEXT = curses.color_pair(1)
@@ -70,9 +69,25 @@ class CursesWindow:
             # refresh the rows for printing
             self.rows, self.cols = self.stdscr.getmaxyx()
 
+            if key_press == curses.KEY_DOWN or key_press == 106:
+                self.position += 1
+                max_valid_rows = self.rows - (self.rows % 4)
+
+                if self.position * 4 >= max_valid_rows:
+                    self.current_page += 1
+                    self.position = 0
+
+            if key_press == curses.KEY_UP or key_press == 107:
+                self.position -= 1
+
+                if self.position < 0:
+                    if self.current_page > 0:
+                        self.current_page -= 1
+                        self.position = self.rows / 4 - 1
+                    else:
+                        self.position = 0
+            # todo: key left and key right
             self.window_box.erase()
-            # self.stdscr.border(0)
-            # self.window_box.border(0)
 
             self.print_selections()
 
@@ -82,89 +97,3 @@ class CursesWindow:
         self.init_curses(stdscr)
         self.print_selections()
         self.poll_draw_render()
-
-        # row_num = len(self.data)
-
-        # stdscr.refresh()
-        # box.refresh()
-
-        # x = stdscr.getch()
-        # detects for key changes
-        # while x != 27 and x != 113:
-        #     if x == curses.KEY_DOWN or x == 106:
-        #         if self.current_page == 1:
-        #             if self.position < max_row:
-        #                 self.position += 1
-        #             else:
-        #                 if self.pages > 1:
-        #                     self.current_page += 1
-        #                     self.position = 1 + \
-        #                         (max_row * (self.current_page - 1))
-        #         elif self.current_page == self.pages:
-        #             if self.position < len(self.data):
-        #                 self.position += 1
-        #         else:
-        #             if self.position < max_row + \
-        #                     (max_row * (self.current_page - 1)):
-        #                 self.position += 1
-        #             else:
-        #                 self.current_page = self.current_page + 1
-        #                 self.position = 1 + (max_row * (self.current_page - 1))
-        #     if x == curses.KEY_UP or x == 107:
-        #         if self.current_page == 1:
-        #             if self.position > 1:
-        #                 self.position -= 1
-        #         else:
-        #             if self.position > (
-        #                     1 + (max_row * (self.current_page - 1))):
-        #                 self.position -= 1
-        #             else:
-        #                 self.current_page -= 1
-        #                 self.position = max_row + \
-        #                     (max_row * (self.current_page - 1))
-        #     if x == curses.KEY_LEFT:
-        #         if self.current_page > 1:
-        #             self.current_page -= 1
-        #             self.position = 1 + (max_row * (self.current_page - 1))
-
-        #     if x == curses.KEY_RIGHT:
-        #         if self.current_page < self.pages:
-        #             self.current_page += 1
-        #             self.position = (1 + (max_row * (self.current_page - 1)))
-        #     # if x == ord( "\n" ) and row_num != 0:
-        #         # stdscr.erase()
-        #         # stdscr.border( 0 )
-        #         # stdscr.addstr( 14, 3, "YOU HAVE PRESSED '" + strings[ position - 1 ] + "' ON POSITION " + str( position ) )
-
-        #     box.erase()
-        #     stdscr.border(0)
-        #     box.border(0)
-
-        #     for i in range(1 + (max_row * (self.current_page - 1)),
-        #                    max_row + 1 + (max_row * (self.current_page - 1))):
-        #         if row_num == 0:
-        #             box.addstr(1, 1, "There aren't strings", highlightText)
-        #         elif (i + (max_row * (self.current_page - 1))) == self.position + (max_row * (self.current_page - 1)):
-        #                 box.addstr(i - (max_row * (self.current_page - 1)), 2, str(i) + " - " + self.data[i - 1], highlightText)
-        #         else:
-        #             box.addstr(i - (max_row * (self.current_page - 1)),
-        #                            2, str(i) + " - " + self.data[i - 1], normalText)
-        #             if i == row_num:
-        #                 break
-
-        #     stdscr.refresh()
-        #     box.refresh()
-        #     x = stdscr.getch()
-
-    # rows, cols = stdscr.getmaxyx()
-    # print(f'{rows} rows and {cols} cols')
-
-    # gets color pair 1
-    # highlightText = curses.color_pair(1)
-    # # A_NORMAL is default text styling
-    # normalText = curses.A_NORMAL
-
-    # max_row = 30
-    # # max number of rows
-
-    # initialize as a box
