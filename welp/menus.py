@@ -4,21 +4,42 @@ import math
 
 class CursesWindow:
     def set_data(self, data):
-
-        """
-        todo: this should really be an 2d array. position keeps track of the outer array
-        while the render renders the inside data
-
-        """
         lines = []
         for b in data:
             lines.append(b['name'])
-            lines.append('{}  {}  {}'.format(b['price'], b['distance'], b['rating']))
+            lines.append('{}  {}  {}'.format(b['price'], b['distance'],
+                         b['rating']))
+            lines.append(b['url'].split('?')[0])
             lines.append('')
+
         self.data = lines
         print(self.data)
 
         # self.max_rows = 30
+
+    def print_selections(self):
+        HIGHLIGHT_TEXT = curses.color_pair(1)
+        NORMAL_TEXT = curses.A_NORMAL
+
+        if len(self.data) == 0:
+            self.window_box.addstr(1, 1, "No results found 🍴",
+                                   HIGHLIGHT_TEXT)
+        else:
+            # each entry contains 4 rows. Name, URL, Data, Blankline
+            # if there are 100 rows, we can show 25 entries
+            for i in range(1, self.rows - 1):
+                if (i == self.position):
+                    # y, x, string
+                    self.window_box.addstr(i, 2, self.data[i - 1],
+                                           HIGHLIGHT_TEXT)
+                else:
+                    self.window_box.addstr(i, 2, self.data[i - 1],
+                                           NORMAL_TEXT)
+                if i == len(self.data):
+                    break
+
+        self.stdscr.refresh()
+        self.window_box.refresh()
 
     def open_curses_ui(self):
         curses.wrapper(self.print_window)
@@ -43,32 +64,11 @@ class CursesWindow:
         self.window_box = box
         self.window_box.box()
 
-    def print_initial_screen(self):
-        HIGHLIGHT_TEXT = curses.color_pair(1)
-        NORMAL_TEXT = curses.A_NORMAL
-
-        for i in range(1, self.rows-1):
-            if len(self.data) == 0:
-                self.window_box.addstr(1, 1,
-                                       "No results found 🍽", HIGHLIGHT_TEXT)
-            else:
-                if (i == self.position):
-                    # y, x, string
-                    self.window_box.addstr(i, 2, self.data[i - 1],
-                                           HIGHLIGHT_TEXT)
-                else:
-                    self.window_box.addstr(i, 2, self.data[i - 1], NORMAL_TEXT)
-                if i == len(self.data):
-                    break
-
-        self.stdscr.refresh()
-        self.window_box.refresh()
-
         return
 
     def poll_draw_render(self):
-        HIGHLIGHT_TEXT = curses.color_pair(1)
-        NORMAL_TEXT = curses.A_NORMAL
+        # HIGHLIGHT_TEXT = curses.color_pair(1)
+        # NORMAL_TEXT = curses.A_NORMAL
         key_press = self.stdscr.getch()
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
@@ -79,30 +79,15 @@ class CursesWindow:
             self.stdscr.border(0)
             self.window_box.border(0)
 
-            for i in range(1, self.rows - 1):
-                if len(self.data) == 0:
-                    self.window_box.addstr(1, 1,
-                                           "There aren't strings", HIGHLIGHT_TEXT)
-                else:
-                    if (i == self.position):
-                        # y, x, string
-                        self.window_box.addstr(i, 2, self.data[i - 1],
-                                               HIGHLIGHT_TEXT)
-                    else:
-                        self.window_box.addstr(i, 2, self.data[i - 1], NORMAL_TEXT)
-                    if i == len(self.data):
-                        break
+            self.print_selections()
 
-            self.stdscr.refresh()
-            self.window_box.refresh()
             key_press = self.stdscr.getch()
 
     def print_window(self, stdscr):
         self.init_curses(stdscr)
-        self.print_initial_screen()
+        self.print_selections()
         self.poll_draw_render()
-        
-        
+
         # row_num = len(self.data)
 
         # stdscr.refresh()
