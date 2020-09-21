@@ -65,6 +65,8 @@ class CursesWindow:
         # HIGHLIGHT_TEXT = curses.color_pair(1)
         # NORMAL_TEXT = curses.A_NORMAL
         key_press = self.stdscr.getch()
+        max_valid_rows = self.rows - (self.rows % 4)
+        max_pages = len(self.data) / max_valid_rows
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
             # refresh the rows for printing
@@ -91,6 +93,17 @@ class CursesWindow:
                         self.position = self.rows / 4 - 1
                     else:
                         self.position = 0
+            
+            if key_press == curses.KEY_LEFT or key_press == 104:
+                if self.current_page > 0:
+                    self.current_page -= 1
+                    self.position = 0
+
+            if key_press == curses.KEY_RIGHT or key_press == 108:
+                if self.current_page < max_pages - 1:
+                    self.current_page += 1
+                    self.position = 0
+
             # todo: key left and key right
             self.window_box.erase()
 
