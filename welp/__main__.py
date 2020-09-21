@@ -45,7 +45,6 @@ def search(term, location, latitude, longitude, radius,
 
     bus = welp.api_client.yelp.query_api(click_data)
 
-
     welp.ui.set_data(bus)
     welp.ui.open_curses_ui()
 

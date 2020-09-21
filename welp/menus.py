@@ -8,7 +8,7 @@ class CursesWindow:
         for b in data:
             lines.append(b['name'])
             lines.append('{}  {}  {}'.format(b['price'], b['distance'],
-                         b['rating']))
+                                             b['rating']))
             lines.append(b['url'].split('?')[0])
             lines.append('')
 
@@ -31,8 +31,9 @@ class CursesWindow:
             for i in range(self.rows):
                 if 4 * self.position <= i < 4 * self.position + 4:
                     # y, x, string
-                    self.window_box.addstr(i, 1, self.data[(self.current_page
-                                           * self.rows) + i], HIGHLIGHT_TEXT)
+                    self.window_box.addstr(
+                        i, 1, self.data[(self.current_page * self.rows) + i],
+                        HIGHLIGHT_TEXT)
                 else:
                     if (self.current_page * self.rows) + i < len(self.data):
                         self.window_box.addstr(i, 1, self.data[
