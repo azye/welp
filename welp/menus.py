@@ -12,8 +12,8 @@ class CursesWindow:
             lines.append(b['url'].split('?')[0])
             lines.append('')
 
-        # for l in lines:
-        #     print(l)
+        for l in lines:
+            print(l)
 
         self.data = lines
 
@@ -73,10 +73,14 @@ class CursesWindow:
             if key_press == curses.KEY_DOWN or key_press == 106:
                 self.position += 1
                 max_valid_rows = self.rows - (self.rows % 4)
+                max_pages = len(self.data) / max_valid_rows
 
                 if self.position * 4 >= max_valid_rows:
-                    self.current_page += 1
-                    self.position = 0
+                    if self.current_page < max_pages - 1:
+                        self.current_page += 1
+                        self.position = 0
+                    else:
+                        self.position -= 1
 
             if key_press == curses.KEY_UP or key_press == 107:
                 self.position -= 1
