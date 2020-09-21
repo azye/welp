@@ -13,9 +13,6 @@ class CursesWindow:
             lines.append('')
 
         self.data = lines
-        print(self.data)
-
-        # self.max_rows = 30
 
     def print_selections(self):
         HIGHLIGHT_TEXT = curses.color_pair(1)
@@ -25,15 +22,15 @@ class CursesWindow:
             self.window_box.addstr(1, 1, "No results found 🍴",
                                    HIGHLIGHT_TEXT)
         else:
-            # each entry contains 4 rows. Name, URL, Data, Blankline
-            # if there are 100 rows, we can show 25 entries
-            for i in range(1, self.rows - 1):
+            for i in range(self.rows):
                 if (i == self.position):
                     # y, x, string
-                    self.window_box.addstr(i, 2, self.data[i - 1],
+                    # print("belh", i)
+                    self.window_box.addstr(i, 1, self.data[i],
                                            HIGHLIGHT_TEXT)
                 else:
-                    self.window_box.addstr(i, 2, self.data[i - 1],
+                    # print(i)
+                    self.window_box.addstr(i, 1, self.data[i],
                                            NORMAL_TEXT)
                 if i == len(self.data):
                     break
@@ -52,17 +49,15 @@ class CursesWindow:
         curses.curs_set(0)
 
         self.stdscr = stdscr
-        rows, cols = stdscr.getmaxyx()
-        box = curses.newwin(rows, cols)
-        self.rows = rows
-        self.cols = cols
+        self.rows, self.cols = stdscr.getmaxyx()
+        box = curses.newwin(self.rows, self.cols)
 
         self.pages = int(math.ceil(len(self.data) / self.rows))
-        self.position = 1
+        self.position = 0
         self.current_page = 1
 
         self.window_box = box
-        self.window_box.box()
+        # self.window_box.box()
 
         return
 
@@ -76,8 +71,8 @@ class CursesWindow:
             self.rows, self.cols = self.stdscr.getmaxyx()
 
             self.window_box.erase()
-            self.stdscr.border(0)
-            self.window_box.border(0)
+            # self.stdscr.border(0)
+            # self.window_box.border(0)
 
             self.print_selections()
 
