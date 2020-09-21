@@ -16,7 +16,7 @@ def welp():
 @click.option('--radius', default=5000, type=click.INT)
 @click.option('--categories', default="", type=click.STRING)
 @click.option('--locale', default="en_US", type=click.STRING)
-@click.option('--limit', default=20, type=click.INT)
+@click.option('--limit', default=50, type=click.INT)
 @click.option('--sort-by', default='best_match', type=click.STRING)
 @click.option('--price', default='1,2,3', type=click.STRING)
 @click.option('--attributes', default='', type=click.STRING)

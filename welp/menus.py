@@ -1,19 +1,25 @@
 import curses
+import pprint
 
 
 class CursesWindow:
     def set_data(self, data):
         lines = []
-        print(data)
-        for b in data:
-            lines.append(b['name'])
-            lines.append('{}  {}  {}'.format(b['price'], b['distance'],
-                                             b['rating']))
-            lines.append(b['url'].split('?')[0])
-            lines.append('')
 
-        for l in lines:
-            print(l)
+        if data:
+            for b in data:
+                lines.append(b['name'])
+                lines.append(
+                    '{}🌟({}) {} {}'.format(
+                        b['rating'],
+                        b['review_count'],
+                        convert_price(b['price']),
+                        convert_categories(b['categories'])))
+                lines.append('Example Address')
+                lines.append(b['url'].split('?')[0])
+                lines.append('')
+
+        pprint.pprint(data)
 
         self.data = lines
 
@@ -93,7 +99,7 @@ class CursesWindow:
                         self.position = self.rows / 4 - 1
                     else:
                         self.position = 0
-            
+
             if key_press == curses.KEY_LEFT or key_press == 104:
                 if self.current_page > 0:
                     self.current_page -= 1
@@ -115,3 +121,89 @@ class CursesWindow:
         self.init_curses(stdscr)
         self.print_selections()
         self.poll_draw_render()
+
+
+def convert_price(price):
+    return '💲' * len(price)
+
+
+def convert_categories(categories):
+    ret = ""
+    category_to_emoji = {
+        'seafood': '🦞',
+        'burgers': '🍔',
+        'tacos': '🌮',
+        'foodtrucks': '🚛',
+        'italian': '🍝',
+        'german': '',
+        'bars': '',
+        'beergardens'
+        'mexican'
+        'venues': '',
+        'fishnchips': '',
+        'newmexican': '',
+        'greek': '',
+        'mediterranean': '',
+        'cajun': '',
+        'chicken_wings': '',
+        'chickenshop': '',
+        'tapasmallplates': '',
+        'tapas': '',
+        'wine_bars': '',
+        'whiskybars': '',
+        'shanghainese': '',
+        'cantonese': '',
+        'chinese': '',
+        'coffee': '',
+        'hkcafe': '',
+        'bbq': '',
+        'southern': '',
+        'cambodian': '',
+        'persian': '',
+        'japanese': '',
+        'hotpot': '',
+        'diyfood': '',
+        'noodles': '',
+        'vegan': '',
+        'panasian': '',
+        'asianfusion': '',
+        'lounges': '',
+        'soup': '',
+        'ramen': '',
+        'japacurry': '',
+        'brewpubs': '',
+        'hawaiian': '',
+        'tikibars': '',
+        'brasseries': '',
+        'musicvenues': '',
+        'food_court': '',
+        'carribean': '',
+        'tradamerican': '',
+        'pizza': '',
+        'hotdog': '',
+        'hotdogs': '',
+        'pubs': '',
+        'gastropubs': '',
+        'french': '',
+        'kebab': '',
+        'halal': '',
+        'asianfusion': '',
+        'vietnamese': '',
+        'cocktailbars': '',
+        'korean': '',
+        'poke': '',
+        'hawaiian': '',
+        'steak': '',
+        'bubbletea': '🍹',
+        'himalayan': '',
+        'newamerican': '',
+        'breakfast_brunch': '',
+        'salads': '',
+        'thai': '',
+    }
+    for c in categories:
+        if c['alias'] in category_to_emoji:
+            ret += category_to_emoji[c['alias']]
+
+    return ret
+
