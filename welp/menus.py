@@ -1,5 +1,7 @@
 import curses
-import pprint
+import math
+# import pprint
+# import sys
 
 rows_in_entry = 5
 
@@ -21,7 +23,7 @@ class CursesWindow:
                 lines.append(b['url'].split('?')[0])
                 lines.append('')
 
-        pprint.pprint(data)
+        # pprint.pprint(data)
 
         self.data = lines
 
@@ -37,7 +39,9 @@ class CursesWindow:
                 self.rows -= (self.rows % rows_in_entry)
 
             for i in range(self.rows):
-                if rows_in_entry * self.position <= i < rows_in_entry * self.position + rows_in_entry and (self.current_page * self.rows) + i < len(self.data):
+                if rows_in_entry * self.position <= i < rows_in_entry * \
+                   self.position + rows_in_entry and \
+                   (self.current_page * self.rows) + i < len(self.data):
                     # y, x, string
                     if i < rows_in_entry * self.position + rows_in_entry - 1:
                         self.window_box.addstr(
@@ -49,8 +53,8 @@ class CursesWindow:
                         NORMAL_TEXT)
                 elif (self.current_page * self.rows) + i < len(self.data):
                     self.window_box.addstr(i, 1, self.data[
-                                               (self.current_page * self.rows)
-                                               + i], NORMAL_TEXT)
+                        (self.current_page * self.rows)
+                        + i], NORMAL_TEXT)
                 if i == len(self.data):
                     break
 
@@ -78,26 +82,36 @@ class CursesWindow:
         # NORMAL_TEXT = curses.A_NORMAL
         key_press = self.stdscr.getch()
         max_valid_rows = self.rows - (self.rows % rows_in_entry)
-        max_pages = len(self.data) / max_valid_rows
+        max_pages = math.ceil(len(self.data) / max_valid_rows) - 1
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
             # refresh the rows for printing
             self.rows, self.cols = self.stdscr.getmaxyx()
 
+            if key_press == curses.KEY_RESIZE:
+                self.position = 0
+                self.current_page = 0
+                self.rows, self.cols = self.stdscr.getmaxyx()
+                max_valid_rows = self.rows - (self.rows % rows_in_entry)
+                max_pages = math.ceil(len(self.data) / max_valid_rows) - 1
+
             if key_press == curses.KEY_DOWN or key_press == 106:
                 self.position += 1
                 max_valid_rows = self.rows - (self.rows % rows_in_entry)
-                max_pages = len(self.data) / max_valid_rows
-                # positions_in_page = len(self.data[self.current_page * self.rows:]) / rows_in_entry
-
+                # max_pages = math.ceil(len(self.data) / max_valid_rows) - 1
                 if self.position * rows_in_entry >= max_valid_rows:
-                    if self.current_page < max_pages - 1:
+                    if self.current_page < max_pages:
                         self.current_page += 1
                         self.position = 0
                     else:
                         self.position -= 1
-                # elif self.position >= positions_in_page:
-                #     self.position -= 1
+
+                if self.current_page == max_pages:
+                    positions_in_page = math.ceil(
+                        len(self.data[self.current_page * max_valid_rows:]) /
+                        rows_in_entry) - 1
+                    if self.position > positions_in_page:
+                        self.position -= 1
 
             if key_press == curses.KEY_UP or key_press == 107:
                 self.position -= 1
@@ -115,11 +129,10 @@ class CursesWindow:
                     self.position = 0
 
             if key_press == curses.KEY_RIGHT or key_press == 108:
-                if self.current_page < max_pages - 1:
+                if self.current_page < max_pages:
                     self.current_page += 1
                     self.position = 0
 
-            # todo: key left and key right
             self.window_box.erase()
 
             self.print_selections()
@@ -215,4 +228,3 @@ def convert_categories(categories):
             ret += category_to_emoji[c['alias']]
 
     return ret
-
