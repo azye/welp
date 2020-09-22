@@ -1,6 +1,8 @@
 import curses
 import pprint
 
+rows_in_entry = 5
+
 
 class CursesWindow:
     def set_data(self, data):
@@ -15,7 +17,7 @@ class CursesWindow:
                         b['review_count'],
                         convert_price(b['price']),
                         convert_categories(b['categories'])))
-                lines.append('Example Address')
+                lines.append(" ".join(b['location']['display_address']))
                 lines.append(b['url'].split('?')[0])
                 lines.append('')
 
@@ -31,18 +33,22 @@ class CursesWindow:
             self.window_box.addstr(1, 1, "No results found 🍴",
                                    HIGHLIGHT_TEXT)
         else:
-            if self.rows % 4 != 0:
-                self.rows -= (self.rows % 4)
+            if self.rows % rows_in_entry != 0:
+                self.rows -= (self.rows % rows_in_entry)
 
             for i in range(self.rows):
-                if 4 * self.position <= i < 4 * self.position + 4:
+                if rows_in_entry * self.position <= i < rows_in_entry * self.position + rows_in_entry and (self.current_page * self.rows) + i < len(self.data):
+                    # y, x, string
+                    if i < rows_in_entry * self.position + rows_in_entry - 1:
+                        self.window_box.addstr(
+                            i, 0, ' ',
+                            HIGHLIGHT_TEXT)
                     # y, x, string
                     self.window_box.addstr(
                         i, 1, self.data[(self.current_page * self.rows) + i],
-                        HIGHLIGHT_TEXT)
-                else:
-                    if (self.current_page * self.rows) + i < len(self.data):
-                        self.window_box.addstr(i, 1, self.data[
+                        NORMAL_TEXT)
+                elif (self.current_page * self.rows) + i < len(self.data):
+                    self.window_box.addstr(i, 1, self.data[
                                                (self.current_page * self.rows)
                                                + i], NORMAL_TEXT)
                 if i == len(self.data):
@@ -71,7 +77,7 @@ class CursesWindow:
         # HIGHLIGHT_TEXT = curses.color_pair(1)
         # NORMAL_TEXT = curses.A_NORMAL
         key_press = self.stdscr.getch()
-        max_valid_rows = self.rows - (self.rows % 4)
+        max_valid_rows = self.rows - (self.rows % rows_in_entry)
         max_pages = len(self.data) / max_valid_rows
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
@@ -80,15 +86,18 @@ class CursesWindow:
 
             if key_press == curses.KEY_DOWN or key_press == 106:
                 self.position += 1
-                max_valid_rows = self.rows - (self.rows % 4)
+                max_valid_rows = self.rows - (self.rows % rows_in_entry)
                 max_pages = len(self.data) / max_valid_rows
+                # positions_in_page = len(self.data[self.current_page * self.rows:]) / rows_in_entry
 
-                if self.position * 4 >= max_valid_rows:
+                if self.position * rows_in_entry >= max_valid_rows:
                     if self.current_page < max_pages - 1:
                         self.current_page += 1
                         self.position = 0
                     else:
                         self.position -= 1
+                # elif self.position >= positions_in_page:
+                #     self.position -= 1
 
             if key_press == curses.KEY_UP or key_press == 107:
                 self.position -= 1
@@ -96,7 +105,7 @@ class CursesWindow:
                 if self.position < 0:
                     if self.current_page > 0:
                         self.current_page -= 1
-                        self.position = self.rows / 4 - 1
+                        self.position = (max_valid_rows / rows_in_entry) - 1
                     else:
                         self.position = 0
 
@@ -179,7 +188,7 @@ def convert_categories(categories):
         'food_court': '',
         'carribean': '',
         'tradamerican': '',
-        'pizza': '',
+        'pizza': '🍕',
         'hotdog': '',
         'hotdogs': '',
         'pubs': '',
