@@ -1,9 +1,58 @@
 import curses
 import math
-# import pprint
-# import sys
 
 rows_in_entry = 5
+
+
+class SelectionWindow:
+    def __init__(self, data, stdscr, window):
+        self.window_box = window
+        self.stdscr = stdscr
+        self.business = data
+        self.rows, self.cols = stdscr.getmaxyx()
+
+    def print_business(self):
+        NORMAL_TEXT = curses.A_NORMAL
+
+        if not self.business:
+            self.window_box.addstr(1, 1, "Not a valid business 🍴",
+                                   NORMAL_TEXT)
+        else:
+            business_data = self.business.get_full_printable()
+
+            for i in range(self.rows):
+                if i == len(business_data):
+                    break
+
+                self.window_box.addstr(i, 1, business_data[i], NORMAL_TEXT)
+        
+        self.stdscr.refresh()
+        self.window_box.refresh()
+
+    def poll_draw_render(self):
+        key_press = self.stdscr.getch()
+
+        # run until quit keys are pressed
+        while key_press != 27 and key_press != 113:
+            # refresh the rows for printing
+            self.rows, self.cols = self.stdscr.getmaxyx()
+
+            if key_press == curses.KEY_DOWN or key_press == 106:
+                pass
+
+            if key_press == curses.KEY_UP or key_press == 107:
+                pass
+
+            if key_press == curses.KEY_LEFT or key_press == 104:
+                pass
+
+            if key_press == curses.KEY_RIGHT or key_press == 108:
+                pass
+
+            self.window_box.erase()
+            self.print_business()
+
+            key_press = self.stdscr.getch()
 
 
 class CursesWindow:
@@ -16,7 +65,7 @@ class CursesWindow:
 
         if len(self.data) == 0:
             self.window_box.addstr(1, 1, "No results found 🍴",
-                                   HIGHLIGHT_TEXT)
+                                   NORMAL_TEXT)
         else:
             if self.rows % rows_in_entry != 0:
                 self.rows -= (self.rows % rows_in_entry)
@@ -60,8 +109,7 @@ class CursesWindow:
         key_press = self.stdscr.getch()
         max_valid_rows = self.rows - (self.rows % rows_in_entry)
         max_entries = int(self.rows / rows_in_entry)
-        max_pages = math.ceil(len(self.data) / max_entries) - 1
-        data_start_idx = int(self.current_page * max_entries)
+        max_pages = int(math.ceil(len(self.data) / max_entries) - 1)
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
             # refresh the rows for printing
@@ -72,12 +120,18 @@ class CursesWindow:
                 self.current_page = 0
                 self.rows, self.cols = self.stdscr.getmaxyx()
                 max_valid_rows = self.rows - (self.rows % rows_in_entry)
-                max_pages = math.ceil(len(self.data) / max_entries) - 1
+                self.max_pages = math.ceil(len(self.data) / max_entries) - 1
 
             if key_press == 10:
-                current_entry = self.data[data_start_idx:data_start_idx +
-                                          max_entries][self.position]
-                print(current_entry)
+                data_start_idx = int(self.current_page * max_entries)
+
+                current_entry = self.data[int(data_start_idx):int(data_start_idx +
+                                          max_entries)][int(self.position)]
+                # print(current_entry)
+                self.window_box.erase()
+                w = SelectionWindow(current_entry, self.stdscr, self.window_box)
+                w.print_business()
+                w.poll_draw_render()
 
             if key_press == curses.KEY_DOWN or key_press == 106:
                 self.position += 1

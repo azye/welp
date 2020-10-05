@@ -48,6 +48,11 @@ class BusinessData:
     def __str__(self):
         return " ".join([self.id, self.name])
 
+    def get_full_printable(self):
+        return [
+            self.name
+        ]
+
     def get_printable(self):
         return [
             self.name,

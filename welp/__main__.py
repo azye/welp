@@ -52,8 +52,6 @@ def search(term, location, latitude, longitude, radius,
         data.append(BusinessData(b))
 
     welp.ui.set_data(data)
-    # welp.ui.print_rows(data)
-
     welp.ui.open_curses_ui()
 
 
