@@ -1,6 +1,7 @@
 import click
 from .welp import Welp
 from .click_data import ClickData
+from .business_data import BusinessData
 
 
 @click.group()
@@ -46,7 +47,13 @@ def search(term, location, latitude, longitude, radius,
 
     bus = welp.api_client.yelp.query_api(click_data)
 
-    welp.ui.set_data(bus)
+    data = []
+    for b in bus:
+        data.append(BusinessData(b))
+
+    welp.ui.set_data(data)
+    # welp.ui.print_rows(data)
+
     welp.ui.open_curses_ui()
 
 
