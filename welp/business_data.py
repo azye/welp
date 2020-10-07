@@ -50,7 +50,13 @@ class BusinessData:
 
     def get_full_printable(self):
         return [
-            self.name
+            self.name,
+            "",
+            "{} {}".format(", ".join([x['title'] for x in self.categories]), self.display_categories),
+            "",
+            '{} 🌟 {} reviews {}'.format(self.rating, self.review_count, self.display_price),
+            'Closed' if self.is_closed else 'Open Now',
+
         ]
 
     def get_printable(self):

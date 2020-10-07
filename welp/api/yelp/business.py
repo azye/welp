@@ -1,16 +1,5 @@
-from __future__ import print_function
-
-import argparse
-import json
-import pprint
-import sys
-import urllib
 import os
-import requests
-
-from urllib.error import HTTPError
 from urllib.parse import quote
-from urllib.parse import urlencode
 
 API_KEY = os.environ['YELP_API_KEY']
 API_HOST = 'https://api.yelp.com'
@@ -37,12 +26,7 @@ class BusinessSearch:
 
         return response.json()
 
-    def search(self, api_key, url_params):
-
-        return self.request(API_HOST, SEARCH_PATH,
-                            api_key, url_params=url_params)
-
-    def get_business(self, api_key, business_id):
+    def get_business(self, business_id):
         """Query the Business API by a business ID.
 
         Args:
@@ -53,23 +37,17 @@ class BusinessSearch:
         """
         business_path = BUSINESS_PATH + business_id
 
-        return self.request(API_HOST, business_path, api_key)
+        return self.request(API_HOST, business_path, API_KEY)
 
-    def query_api(self, url_params):
+    def query_business_search_api(self, url_params):
         """Queries the API by the input values from the user.
         Args:
             term (str): The search term to query.
             location (str): The location of the business to query.
         """
-        response = self.search(API_KEY, url_params.__dict__)
+        response = self.request(API_HOST, SEARCH_PATH,
+                                API_KEY, url_params=url_params.__dict__)
 
         # print(response)
 
         return response.get('businesses')
-        # return businesses
-        # if not businesses:
-        #     # print(u'No businesses for {0} in {1} found.'.format(term, location))
-        #     return
-        # for i in range(len(businesses)):
-        #     # print(businesses[i])
-        #     pprint.pprint(businesses[i], indent=2)

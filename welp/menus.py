@@ -25,7 +25,7 @@ class SelectionWindow:
                     break
 
                 self.window_box.addstr(i, 1, business_data[i], NORMAL_TEXT)
-        
+
         self.stdscr.refresh()
         self.window_box.refresh()
 
@@ -56,6 +56,9 @@ class SelectionWindow:
 
 
 class CursesWindow:
+    def __init__(self, client):
+        self.client = client
+
     def set_data(self, data):
         self.data = data
 
@@ -129,6 +132,8 @@ class CursesWindow:
                                           max_entries)][int(self.position)]
                 # print(current_entry)
                 self.window_box.erase()
+                business_details = self.client.yelp.get_business(current_entry.id)
+                current_entry.hours = business_details['hours'] if 'hours' in business_details else None
                 w = SelectionWindow(current_entry, self.stdscr, self.window_box)
                 w.print_business()
                 w.poll_draw_render()

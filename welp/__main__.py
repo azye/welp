@@ -45,7 +45,7 @@ def search(term, location, latitude, longitude, radius,
         lat, ln = welp.api_client.geolocation.geolocate()
         click_data.set_location(lat, ln)
 
-    bus = welp.api_client.yelp.query_api(click_data)
+    bus = welp.api_client.yelp.query_business_search_api(click_data)
 
     data = []
     for b in bus:

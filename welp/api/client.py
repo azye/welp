@@ -6,7 +6,6 @@ from .yelp.business import BusinessSearch
 
 class Client:
     def __init__(self):
-        # self.curses =
         self.session = requests.session()
         self.yelp = BusinessSearch(self)
         self.geolocation = Geolocation(self)
