@@ -70,22 +70,28 @@ class CursesWindow:
             self.window_box.addstr(1, 1, "No results found 🍴",
                                    NORMAL_TEXT)
         else:
-            if self.rows % rows_in_entry != 0:
-                self.rows -= (self.rows % rows_in_entry)
+            # if self.rows % rows_in_entry != 0:
+            #     self.rows -= (self.rows % rows_in_entry)
             max_entries = int(self.rows / rows_in_entry)
+
+            rows_remaining = self.rows - (rows_in_entry * max_entries)
+            
+            if rows_remaining >= 4:
+                max_entries += 1
+
             data_start_idx = int(self.current_page * max_entries)
             i = 0
 
             for entry in self.data[data_start_idx:data_start_idx +
                                    max_entries]:
                 for row in entry.get_printable():
+                    if i < self.rows:
+                        if self.position * rows_in_entry <= i < self.position * \
+                        rows_in_entry + 4:
+                            self.window_box.addstr(i, 0, ' ', HIGHLIGHT_TEXT)
 
-                    if self.position * rows_in_entry <= i < self.position * \
-                       rows_in_entry + 4:
-                        self.window_box.addstr(i, 0, ' ', HIGHLIGHT_TEXT)
-
-                    self.window_box.addstr(i, 1, row, NORMAL_TEXT)
-                    i += 1
+                        self.window_box.addstr(i, 1, row, NORMAL_TEXT)
+                        i += 1
 
         self.stdscr.refresh()
         self.window_box.refresh()
