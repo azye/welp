@@ -1,6 +1,6 @@
 import curses
 import math
-
+import sys
 rows_in_entry = 5
 
 
@@ -118,7 +118,12 @@ class CursesWindow:
         key_press = self.stdscr.getch()
         max_valid_rows = self.rows - (self.rows % rows_in_entry)
         max_entries = int(self.rows / rows_in_entry)
-        max_pages = int(math.ceil(len(self.data) / max_entries) - 1)
+        rows_remaining = self.rows - (rows_in_entry * max_entries)
+
+        if rows_remaining >= 4:
+            max_entries += 1
+
+        self.max_pages = int(math.ceil(len(self.data) / max_entries) - 1)
         # run until quit keys are pressed
         while key_press != 27 and key_press != 113:
             # refresh the rows for printing
@@ -145,22 +150,15 @@ class CursesWindow:
                 w.poll_draw_render()
 
             if key_press == curses.KEY_DOWN or key_press == 106:
-                self.position += 1
-                max_valid_rows = self.rows - (self.rows % rows_in_entry)
-                # max_pages = math.ceil(len(self.data) / max_valid_rows) - 1
-                if self.position * rows_in_entry >= max_valid_rows:
-                    if self.current_page < max_pages:
+                curr_data_idx = (self.current_page * max_entries) + self.position
+
+                if curr_data_idx + 1 < len(self.data):
+                    if self.position * rows_in_entry < max_valid_rows - rows_in_entry:
+                        self.position += 1
+                    else:
                         self.current_page += 1
                         self.position = 0
-                    else:
-                        self.position -= 1
-
-                if self.current_page == max_pages:
-                    positions_in_page = math.ceil(
-                        len(self.data[self.current_page * max_entries:]) - 1)
-                    if self.position > positions_in_page:
-                        self.position -= 1
-
+                    
             if key_press == curses.KEY_UP or key_press == 107:
                 self.position -= 1
 
@@ -177,7 +175,7 @@ class CursesWindow:
                     self.position = 0
 
             if key_press == curses.KEY_RIGHT or key_press == 108:
-                if self.current_page < max_pages:
+                if self.current_page < self.max_pages:
                     self.current_page += 1
                     self.position = 0
 
