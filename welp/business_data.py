@@ -48,14 +48,20 @@ class BusinessData:
     def __str__(self):
         return " ".join([self.id, self.name])
 
+    def extend_details(self, data):
+        self.hours = data['hours']
+        # yelp why is this an array???
+        self.is_open_now = data['hours'][0]['is_open_now']
+
     def get_full_printable(self):
+        
         return [
             self.name,
             "",
             "{} {}".format(", ".join([x['title'] for x in self.categories]), self.display_categories),
             "",
             '{} 🌟 {} reviews {}'.format(self.rating, self.review_count, self.display_price),
-            'Closed' if self.is_closed else 'Open Now',
+            'Open Now' if self.is_open_now else 'Closed',
 
         ]
 

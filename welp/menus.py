@@ -5,11 +5,14 @@ rows_in_entry = 5
 
 
 class SelectionWindow:
-    def __init__(self, data, stdscr, window):
+    def __init__(self, data, stdscr, window, client):
         self.window_box = window
         self.stdscr = stdscr
-        self.business = data
         self.rows, self.cols = stdscr.getmaxyx()
+        extendedData = client.yelp.get_business(data.id)
+        data.extend_details(extendedData)
+        self.business = data
+
 
     def print_business(self):
         NORMAL_TEXT = curses.A_NORMAL
@@ -145,7 +148,7 @@ class CursesWindow:
                 self.window_box.erase()
                 business_details = self.client.yelp.get_business(current_entry.id)
                 current_entry.hours = business_details['hours'] if 'hours' in business_details else None
-                w = SelectionWindow(current_entry, self.stdscr, self.window_box)
+                w = SelectionWindow(current_entry, self.stdscr, self.window_box, self.client)
                 w.print_business()
                 w.poll_draw_render()
 
