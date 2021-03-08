@@ -1,0 +1,11 @@
+geocoder
+requests
+click
+pylint
+prompt-toolkit
+termcolor
+colorama
+twine
+mypy
+autopep8
+flake8

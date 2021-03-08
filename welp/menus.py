@@ -1,18 +1,19 @@
 import curses
 import math
-import sys
+from .api.client import Client
+
 rows_in_entry = 5
 
 
 class SelectionWindow:
-    def __init__(self, data, stdscr, window, client):
+    def __init__(self, data, stdscr, window):
+        client = Client()
         self.window_box = window
         self.stdscr = stdscr
         self.rows, self.cols = stdscr.getmaxyx()
         extendedData = client.yelp.get_business(data.id)
         data.extend_details(extendedData)
         self.business = data
-
 
     def print_business(self):
         NORMAL_TEXT = curses.A_NORMAL
@@ -58,9 +59,7 @@ class SelectionWindow:
             key_press = self.stdscr.getch()
 
 
-class CursesWindow:
-    def __init__(self, client):
-        self.client = client
+class CursesWindow:        
 
     def set_data(self, data):
         self.data = data
@@ -90,7 +89,7 @@ class CursesWindow:
                 for row in entry.get_printable():
                     if i < self.rows:
                         if self.position * rows_in_entry <= i < self.position * \
-                        rows_in_entry + 4:
+                            rows_in_entry + 4:
                             self.window_box.addstr(i, 0, ' ', HIGHLIGHT_TEXT)
 
                         self.window_box.addstr(i, 1, row, NORMAL_TEXT)
@@ -146,9 +145,8 @@ class CursesWindow:
                                           max_entries)][int(self.position)]
                 # print(current_entry)
                 self.window_box.erase()
-                business_details = self.client.yelp.get_business(current_entry.id)
-                current_entry.hours = business_details['hours'] if 'hours' in business_details else None
-                w = SelectionWindow(current_entry, self.stdscr, self.window_box, self.client)
+                
+                w = SelectionWindow(current_entry, self.stdscr, self.window_box)
                 w.print_business()
                 w.poll_draw_render()
 

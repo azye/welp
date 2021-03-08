@@ -2,6 +2,7 @@ import click
 from .welp import Welp
 from .click_data import ClickData
 from .business_data import BusinessData
+from .api.client import Client
 
 
 @click.group()
@@ -25,6 +26,7 @@ def welp():
 def search(term, location, latitude, longitude, radius,
            categories, locale, limit, sort_by, price, attributes, verbose):
     welp = Welp()
+    client = Client()
 
     click_data = ClickData(
         term,
@@ -42,10 +44,10 @@ def search(term, location, latitude, longitude, radius,
 
     if not click_data.latitude and not click_data.longitude \
        and not click_data.location:
-        lat, ln = welp.api_client.geolocation.geolocate()
+        lat, ln = client.geolocation.geolocate()
         click_data.set_location(lat, ln)
 
-    bus = welp.api_client.yelp.query_business_search_api(click_data)
+    bus = client.yelp.query_business_search_api(click_data)
     # print(welp.api_client.yelp.get_business('zLViW6kDKNLIYsGkBCNorg'))
 
     data = []
