@@ -40,17 +40,12 @@ Both of these keys are basically free for to use individually. The Google API wi
 
 welp has general vim shotcuts.
 
-`j` scrolls one selection down
-
-`k` scrolls one selection up
-
-`h` scrolls one page back
-
-`l` scrolls one page forward
-
-`q` quits or goes back to previous page
-
-`return` opens detailed business information
+- `j` scrolls one selection down
+- `k` scrolls one selection up
+- `h` scrolls one page back
+- `l` scrolls one page forward
+- `q` quits or goes back to previous page
+- `return` opens detailed business information
 
 ## Development
 
