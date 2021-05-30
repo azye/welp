@@ -1,5 +1,6 @@
 import curses
 import math
+import webbrowser
 from .api.client import Client
 
 rows_in_entry = 5
@@ -13,7 +14,9 @@ class SelectionWindow:
         self.rows, self.cols = stdscr.getmaxyx()
         extendedData = client.yelp.get_business(data.id)
         data.extend_details(extendedData)
+        data.reviews = client.yelp.get_business_reviews(data.id)['reviews']
         self.business = data
+        # should query for review data and extended business data here
 
     def print_business(self):
         NORMAL_TEXT = curses.A_NORMAL
@@ -52,6 +55,9 @@ class SelectionWindow:
 
             if key_press == curses.KEY_RIGHT or key_press == 108:
                 pass
+
+            if key_press == 10:
+                webbrowser.open_new_tab(self.business.display_url)
 
             self.window_box.erase()
             self.print_business()

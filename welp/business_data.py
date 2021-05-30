@@ -50,19 +50,26 @@ class BusinessData:
 
     def extend_details(self, data):
         self.hours = data['hours']
+        self.photos = data['photos']
+        self.coordinates = data['coordinates']
         # yelp why is this an array???
         self.is_open_now = data['hours'][0]['is_open_now']
 
     def get_full_printable(self):
-        
         return [
             self.name,
             "",
+            '{} 🌟 {} reviews {}'.format(self.rating, self.review_count, self.display_price),
+            "",
+            '📞 {}'.format(self.display_phone),
+            '🌐 {}'.format(self.display_url),
+            '📫 {}'.format(self.display_location),
+            '',
             "{} {}".format(", ".join([x['title'] for x in self.categories]), self.display_categories),
             "",
-            '{} 🌟 {} reviews {}'.format(self.rating, self.review_count, self.display_price),
             'Open Now' if self.is_open_now else 'Closed',
-
+            # "",         
+            # "{}".format(self.reviews[0]['text'])
         ]
 
     def get_printable(self):
@@ -103,7 +110,7 @@ class BusinessData:
             'tapas': '🍢',
             'wine_bars': '🍷',
             'whiskybars': '🥃',
-            'shanghainese': '🥮',
+            'shanghainese': '🍜',
             'cantonese': '🥮',
             'chinese': '🥮',
             'coffee': '☕',

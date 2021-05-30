@@ -5,6 +5,7 @@ API_KEY = os.environ['YELP_API_KEY']
 API_HOST = 'https://api.yelp.com'
 SEARCH_PATH = '/v3/businesses/search'
 BUSINESS_PATH = '/v3/businesses/'  # Business ID will come after slash.
+REVIEWS_PATH = '/reviews'
 SEARCH_LIMIT = 20
 
 
@@ -36,6 +37,19 @@ class BusinessSearch:
             dict: The JSON response from the request.
         """
         business_path = BUSINESS_PATH + business_id
+
+        return self.request(API_HOST, business_path, API_KEY)
+
+    def get_business_reviews(self, business_id):
+        """Query the Business API by a business ID.
+
+        Args:
+            business_id (str): The ID of the business to query.
+
+        Returns:
+            dict: The JSON response from the request.
+        """
+        business_path = BUSINESS_PATH + business_id + REVIEWS_PATH
 
         return self.request(API_HOST, business_path, API_KEY)
 

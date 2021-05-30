@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="welp",
-    version="0.0.3",
+    version="0.0.4.1",
     author="Alex Ye",
     author_email="alexzye1@gmail.com",
     description="what should i eat?",
@@ -15,4 +15,8 @@ setuptools.setup(
     entry_points={'console_scripts': ['welp=welp.__main__:welp']},
     packages=setuptools.find_packages(),
     python_requires='>=3.6',
+    install_requires=[
+        'click',
+        'geocoder',
+    ],
 )

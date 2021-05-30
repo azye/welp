@@ -52,6 +52,7 @@ def search(term, location, latitude, longitude, radius,
 
     data = []
     for b in bus:
+        # print(b)
         data.append(BusinessData(b))
 
     welp.ui.set_data(data)

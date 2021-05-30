@@ -18,7 +18,7 @@ class Geolocation:
     def geolocate(self):
         try:
             API_KEY = os.environ['GOOGLE_API_KEY']
-            print('google api key...')
+            # print('google api key...')
             url_params = {
                 'key': API_KEY,
             }
@@ -37,6 +37,6 @@ class Geolocation:
         except KeyError:
             # dont use this irl. just look up your lat long at this point.
             # useful to test without using an google geolocation API key tho
-            print('no google api key, try geocoder...')
+            # print('no google api key, try geocoder...')
             g = geocoder.ip('me')
             return g.latlng[0], g.latlng[1]
